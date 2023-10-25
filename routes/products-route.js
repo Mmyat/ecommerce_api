@@ -8,8 +8,8 @@ router.get('/',(req,res)=>{
 })
 router.post('/post',async(req,res,next)=>{
     try {
-        const {code,name,price} = req.body;
-        const products = new Products({code,name,price})
+        const {code,name,description,price} = req.body;
+        const products = new Products({code,name,description,price})
         products.save();
         res.status(201).json({message:"Created Sucessfully"})
     } catch (error) {

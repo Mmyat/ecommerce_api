@@ -8,6 +8,14 @@ const Products = new Schema({
         type :String,
         required : true,
         unique : true},
+    description : {
+        type :String,
+        required : true,
+        unique : true},
+    image : {
+        type: Buffer,
+        required : true,
+        },
     price : {
         type :Number,
         required : true,
