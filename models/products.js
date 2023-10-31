@@ -1,19 +1,14 @@
-const mongoose = require("mongoose");
-const {Schema,model} = mongoose;
-const Products = new Schema({ 
+const {Schema,model} = require("mongoose");
+const productSchema = new Schema({ 
     code : {
         type : String,
-    },
+        },
     name : {
         type :String,
         required : true,
-        unique : true},
+        },
     description : {
         type :String,
-        required : true,
-        unique : true},
-    image : {
-        type: Buffer,
         required : true,
         },
     price : {
@@ -23,5 +18,5 @@ const Products = new Schema({
     },
   {timestamps :true}
 );
-const UserModel = model('products',Products)
-module.exports = UserModel;
+productSchema.index({"$**" :"text"})
+module.exports = model('Products',productSchema);
