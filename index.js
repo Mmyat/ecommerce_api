@@ -20,7 +20,9 @@ mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGO_URL, () => {
   console.log("Connected to MongoDB");
 });
-app.use('/api/products',require('./routes/products-route'))
+app.use('/api/user',require('./routes/user'))
+app.use('/api/products',require('./routes/products'))
+app.use('/api/cart',require('./routes/cart'))
 app.listen(Port,(err)=>{
     if (err){
         console.log(err);
