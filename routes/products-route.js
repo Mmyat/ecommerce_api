@@ -4,7 +4,19 @@ const Products = require('../models/products')
 router.use(express.json())
 
 //http://localhost:8080/api/products/
-router.get('/',async(req,res)=>{
+router.post('/',async(req,res,next)=>{
+    try {
+        const {code,name,description,price} = req.body;
+        const products = new Products({code,name,description,price})
+        await products.save();
+        res.status(201).json({message:"Created Sucessfully"})
+    } catch (err) {
+        next(err)
+    }
+})
+
+//http://localhost:8080/api/products/
+router.get('/',async(req,res,next)=>{
     try {
         const search = req.query.search
         const filter = {}
@@ -17,57 +29,73 @@ router.get('/',async(req,res)=>{
             message : "process success",
             data : productData
         })
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            status : 404,
-            message : error.message,
-        })
+    } catch (err) {
+        next(err)
     }
 })
 
-router.get(':id',async(req,res)=>{
+const getProductById = async(req,res,next)=>{
     try {
-        const {id} = req.body;
+        const {id} = req.params;
         const productData = await Products.findById(id)
         if (!productData){
             return res.status(404).json(
                 {
                     status : 404,
-                    message : error.message,   
+                    message : err.message,   
                 }
             )
         }
-        else{
-            res.json({
-                status : 200,
-                message : "process success",
-                data : productData
-            })
-        }
+        req.product= productData
+        next();
     } 
-    catch (error) {
-        console.log(error);
-        res.status(500).json({
-            status : 404,
-            message : error.message,
+    catch (err) {
+        next(err)
+    }
+}
+//http://localhost:8080/api/products/${id}
+router.get('/:id',getProductById,async(req,res)=>{
+    res.json({
+        status : 200,
+        message : "Process success",
+        data : req.product
+    })
+})
+
+//http://localhost:8080/api/products/${id}
+router.put('/:id',getProductById,async(req,res,next)=>{
+    try {
+        const product = req.product
+        const {code,name,description,price} = req.body;
+        product.code=code
+        product.name = name
+        product.description = description
+        product.price = price
+        await product.save();
+        res.json({
+            status : 200,
+            message : "Updated successfully",
+            data : product
         })
+    } 
+    catch (err) {
+        next(err)
     }
 })
 
-//http://localhost:8080/api/products/
-router.post('/',async(req,res,next)=>{
+//http://localhost:8080/api/products/${id}
+router.delete('/:id',getProductById,async(req,res,next)=>{
     try {
-        const {code,name,description,price} = req.body;
-        const products = new Products({code,name,description,price})
-        await products.save();
-        res.status(201).json({message:"Created Sucessfully"})
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            status : 500,
-            message : error.message,
+        const product = req.product
+        await product.remove();
+        res.json({
+            status : 200,
+            message : "Deleted successfully",
+            data : product
         })
+    } 
+    catch (err) {
+        next(err)
     }
 })
 module.exports = router;
