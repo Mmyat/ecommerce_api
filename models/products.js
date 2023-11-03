@@ -1,10 +1,10 @@
 const {Schema,model} = require("mongoose");
 const productSchema = new Schema({ 
-    owner : {
-        type: ObjectID,
-        required: true,
-        ref: 'User'
-    },
+    // owner : {
+    //     type: ObjectID,
+    //     required: true,
+    //     ref: 'User'
+    // },
     name: {
         type: String,
         required: true,

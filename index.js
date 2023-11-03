@@ -2,10 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require("mongoose")
-// const bcrypt = require('bcrypt')
 const dotenv = require("dotenv").config()
-// const jwt = require("jsonwebtoken")
-// const User = require("./models/user")
 const Port = 8080;
 app.use(cors())
 app.use(express.json())//z9sUTVdXKfbZREAQ
@@ -20,7 +17,7 @@ mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGO_URL, () => {
   console.log("Connected to MongoDB");
 });
-app.use('/api/user',require('./routes/user'))
+app.use('/api/users',require('./routes/user'))
 app.use('/api/products',require('./routes/products'))
 app.use('/api/cart',require('./routes/cart'))
 app.listen(Port,(err)=>{

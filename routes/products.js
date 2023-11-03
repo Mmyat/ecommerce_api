@@ -6,8 +6,8 @@ router.use(express.json())
 //http://localhost:8080/api/products/
 router.post('/',async(req,res,next)=>{
     try {
-        const {code,name,description,price} = req.body;
-        const products = new Products({code,name,description,price})
+        const {name,description,category,price} = req.body;
+        const products = new Products({name,description,category,price})
         await products.save();
         res.status(201).json({message:"Created Sucessfully"})
     } catch (err) {
@@ -66,10 +66,10 @@ router.get('/:id',getProductById,async(req,res)=>{
 router.put('/:id',getProductById,async(req,res,next)=>{
     try {
         const product = req.product
-        const {code,name,description,price} = req.body;
-        product.code=code
+        const {name,description,category,price} = req.body;
         product.name = name
         product.description = description
+        product.category=category
         product.price = price
         await product.save();
         res.json({
