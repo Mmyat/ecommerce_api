@@ -1,3 +1,3 @@
 const axios = require('axios')
-axios.get("http://localhost:8080/api/products/653e8036a75f646abf669026").then((res)=>{console.log(res.data);})
+axios.get("http://localhost:8080/api/products/65435fbfb4bf836e63bc7d78").then((res)=>{console.log(res.data);})
 .catch(console.log())

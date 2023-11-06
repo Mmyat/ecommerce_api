@@ -4,7 +4,7 @@ const User = require('../models/user')
 const jwt = require("jsonwebtoken")
 router.use(express.json())
 const bcrypt = require('bcrypt')
-router.use(cors({credential:true,origin:"http://localhost:5173"}))
+// router.use(cors({credential:true,origin:"http://localhost:8080"}))
 router.post('/register',async(req,res)=>{
    const {username,password} = req.body;
   try{ 
@@ -36,3 +36,4 @@ router.post('/login',async(req,res)=>{
     res.status(400).json("Wrong user credential")
    }
 })
+module.exports = router;
