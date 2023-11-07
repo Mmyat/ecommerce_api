@@ -8,17 +8,17 @@ const UserShema = new Schema({
         trim: true,
         lowercase: true
       },
-    // email: {
-    //     type: String,
-    //     required: true,
-    //     unique: true,
-    //     lowercase: true,
-    //       validate( value ) {
-    //             if( !validator.isEmail( value )) {
-    //                  throw new Error( "Email is invalid" )
-    //                   }
-    //              }
-    //    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+          validate( value ) {
+                if( !validator.isEmail( value )) {
+                     throw new Error( "Email is invalid" )
+                      }
+                 }
+       },
     password : {
          type: String,
          required: true,
@@ -30,12 +30,12 @@ const UserShema = new Schema({
            }
         }
      },
-    //  tokens: [{
-    //     token: {
-    //         type: String,
-    //         required: true
-    //     }
-    // }]
+     tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
      }, {
      timestamps: true
      })

@@ -3,37 +3,86 @@ const router = express.Router()
 const User = require('../models/user')
 const jwt = require("jsonwebtoken")
 router.use(express.json())
-const bcrypt = require('bcrypt')
+const Auth = require('../middleware/auth')
 // router.use(cors({credential:true,origin:"http://localhost:8080"}))
-router.post('/register',async(req,res)=>{
-   const {username,password} = req.body;
-  try{ 
-    const userDoc = await User.create({
-    username,
-    password : bcrypt.hashSync(password,salt)
-   })
-   res.json(userDoc);}
-   catch(err){
-    res.status(400).json(err)
-   }
+
+const generateAuthToken = async ()=> {
+    const user = this
+    const token = jwt.sign({ _id: user._id.toString()}, process.env.JWT_KEY)
+    user.tokens = user.tokens.concat({token})
+     await user.save()
+    return token
+} 
+
+const findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email })
+    if (!user) {
+        throw new Error('Unable to login')
+    }
+    const isMatch = await bcrypt.compare(password, user.password)
+    console.log(isMatch)
+    if(!isMatch) {
+        throw new Error('Unable to login')
+    }
+
+    return user
+}
+
+router.get('/',(req,res)=>{
+    res.end(
+        "Hello Test"
+    )
 })
-router.post('/login',async(req,res)=>{
-   const {username,password} = req.body;
-    const userDoc = await User.findOne({username})
-    const loginSuccess=bcrypt.compareSync(password,userDoc.password)
-   if (loginSuccess){
-    jwt.sign({username,user_id:userDoc._id},process.env.JWT_KEY,{},
-        (err,token)=>{
-            if(err) throw err;
-            res.cookie("token",token).json({
-                username,
-                user_id:userDoc._id
-            })
+//signup
+router.post('/users/register', async (req, res) => {
+    const user = new User(req.body)
+
+    try {
+        await user.save()
+        const token = await generateAuthToken()
+        res.status(201).send({user, token})
+    } catch (error) {
+        res.status(400).send(error)
+    }
+
+})
+
+//login
+
+router.post('/users/login', async (req, res) => {
+    try {
+        const user = await findByCredentials(req.body.email, req.body.password)
+        const token = await generateAuthToken()
+        res.send({ user, token})
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+//logout
+router.post('/users/logout', Auth, async (req, res) => {
+   
+    try {
+       req.user.tokens =  req.user.tokens.filter((token) => {
+            return token.token !== req.token 
         })
 
-   }
-   else{
-    res.status(400).json("Wrong user credential")
-   }
+        await req.user.save()
+        res.send()
+    } catch (error) {
+        res.status(500).send()
+    }
 })
+
+//Logout All 
+router.post('/users/logoutAll', Auth, async(req, res) => {
+    try {
+        req.user.tokens = []
+        await req.user.save()
+        res.send()
+    } catch (error) {
+        res.status(500).send()        
+    }
+})
+
 module.exports = router;
