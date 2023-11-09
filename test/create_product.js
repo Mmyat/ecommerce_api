@@ -5,4 +5,10 @@ axios.post(`http://localhost:8080/api/products/`,{
     category : "Fashion and Apparel",
     price : 8500,
 }).then((res)=>{console.log(res.data);})
-.catch(console.log())
+.catch( (error)=> {
+    if (error.response) {
+      console.log(error.response.status);
+      console.log(error.response.data);
+      console.log(error.response.headers);
+    }
+})

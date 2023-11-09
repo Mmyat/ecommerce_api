@@ -1,10 +1,12 @@
-const {Schema,model} = require("mongoose");
-const productSchema = new Schema({ 
-    // owner : {
-    //     // type: ObjectID,
-    //     required: true,
-    //     ref: 'User'
-    // },
+const mongoose = require('mongoose')
+const ObjectID = mongoose.Schema.Types.ObjectId
+
+const itemSchema = new mongoose.Schema({
+    owner : {
+        type: ObjectID,
+        required: true,
+        ref: 'User'
+    },
     name: {
         type: String,
         required: true,
@@ -22,9 +24,10 @@ const productSchema = new Schema({
         type: Number,
         required: true
     }
-    }, {
+}, {
     timestamps: true
-    }
-);
-productSchema.index({"$**" :"text"})
-module.exports = model('Products',productSchema);
+})
+
+const Item = mongoose.model('Item', itemSchema)
+
+module.exports = Item

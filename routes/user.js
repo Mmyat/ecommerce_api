@@ -1,31 +1,15 @@
 const express = require('express')
-const router = express.Router()
 const User = require('../models/user')
-const jwt = require("jsonwebtoken")
-router.use(express.json())
 const Auth = require('../middleware/auth')
-// router.use(cors({credential:true,origin:"http://localhost:8080"}))
-
-const generateAuthToken = async ()=> {
-    const user = this
-    const token = jwt.sign({ _id: user._id.toString()}, process.env.JWT_KEY)
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const router = new express.Router()
+const generateAuthToken=async (user) =>{
+    // const user = this
+    const token = jwt.sign({ _id: user._id.toString()}, process.env.JWT_SECRET)
     user.tokens = user.tokens.concat({token})
      await user.save()
     return token
-} 
-
-const findByCredentials = async (email, password) => {
-    const user = await User.findOne({ email })
-    if (!user) {
-        throw new Error('Unable to login')
-    }
-    const isMatch = await bcrypt.compare(password, user.password)
-    console.log(isMatch)
-    if(!isMatch) {
-        throw new Error('Unable to login')
-    }
-
-    return user
 }
 
 router.get('/',(req,res)=>{
@@ -33,34 +17,33 @@ router.get('/',(req,res)=>{
         "Hello Test"
     )
 })
-//signup
-router.post('/users/register', async (req, res) => {
-    const user = new User(req.body)
 
-    try {
-        await user.save()
-        const token = await generateAuthToken()
-        res.status(201).send({user, token})
-    } catch (error) {
-        res.status(400).send(error)
-    }
+// //signup
+// router.post('/register', async (req, res) => {
+//     const user = new User(req.body)
+//     try {
+//         await user.save()
+//         const token = await generateAuthToken(user)
+//         res.status(201).send({user, token})
+//         console.log("hello");
+//     } catch (error) {
+//         res.status(400).send(error)
+//         console.log("error");
+//     }
 
-})
+// })
 
 //login
 
-router.post('/users/login', async (req, res) => {
-    try {
-        const user = await findByCredentials(req.body.email, req.body.password)
-        const token = await generateAuthToken()
-        res.send({ user, token})
-    } catch (error) {
-        res.status(400).send(error)
+router.post('/login', async (req, res) => {
+    const user = await findByCredentials(req.body.email, req.body.password)
+    if (user) {
+        await Tokengenerator();
     }
 })
 
 //logout
-router.post('/users/logout', Auth, async (req, res) => {
+router.post('/logout', Auth, async (req, res) => {
    
     try {
        req.user.tokens =  req.user.tokens.filter((token) => {
@@ -75,7 +58,7 @@ router.post('/users/logout', Auth, async (req, res) => {
 })
 
 //Logout All 
-router.post('/users/logoutAll', Auth, async(req, res) => {
+router.post('/logoutAll', Auth, async(req, res) => {
     try {
         req.user.tokens = []
         await req.user.save()
@@ -84,5 +67,4 @@ router.post('/users/logoutAll', Auth, async(req, res) => {
         res.status(500).send()        
     }
 })
-
-module.exports = router;
+module.exports = router
