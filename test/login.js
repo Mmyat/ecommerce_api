@@ -1,6 +1,6 @@
 const axios = require('axios')
 axios.post(`http://localhost:8080/api/users/login`,{
-  name : "MMZ Sgn",
+  name : "mmz sgnm",
   email : "mmyatzttss@mail.com",
   password : "Abcd123",
 }).then((res)=>{console.log(res.data);})

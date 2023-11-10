@@ -1,7 +1,7 @@
 const {Schema,model} = require("mongoose");
 const productSchema = new Schema({ 
     // owner : {
-    //     // type: ObjectID,
+    //     type: ObjectID,
     //     required: true,
     //     ref: 'User'
     // },
