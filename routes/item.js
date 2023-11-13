@@ -41,13 +41,6 @@ router.get('/items/:id', Auth, async(req, res) => {
 //create an item
 router.post('/items',Auth, async(req, res) => {
     try {
-        // const newItem = new Item({
-        //     owner: req.user._id,
-        //     name: req.body.name,
-        //     description: req.body.description,
-        //     category: req.body.category,
-        //     price: req.body.price,
-        // })
         const owner = req.user._id
         const {name,description,category,price} = req.body;
         const newItem = new Item({owner,name,description,category,price})

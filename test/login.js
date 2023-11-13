@@ -5,7 +5,7 @@ axios.post(`http://localhost:8080/api/users/login`,{
 }).then((res)=>{
   // console.log(res);
   console.log(res.status);
-  console.log(res.headers);
+  // console.log(res.headers);
   // console.log(res.data.user);
   console.log(res.data.token);
 })
