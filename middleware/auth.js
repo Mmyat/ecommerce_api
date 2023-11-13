@@ -2,20 +2,26 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
 const auth = async(req, res, next) => {
-    try {
-        const token = req.header('Authorization').replace('Bearer ','')
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        const user = await User.findOne({ _id: decoded._id, 'tokens.token':token })
-        console.log(token);
-        if(!user) {
-            throw new Error
+
+        // let token = req.headers('Authorization').replace('Bearer ','')
+        let token = req.headers.authorization.replace('Bearer ','')
+        console.log(token)
+        if (!token) return res.status(401).send("Access Denied / Unauthorized request");
+
+        try {   
+            if (token === 'null' || !token) return res.status(401).send('Unauthorized request');
+    
+            let verifiedUser = jwt.verify(token, process.env.JWT_KEY);   // config.TOKEN_SECRET => 'secretKey'
+            if (!verifiedUser) return res.status(401).send('Unauthorized request')
+            const user = await User.findOne({ _id: verifiedUser._id, 'tokens.token':token })
+            console.log(verifiedUser);
+            req.user = user; // user_id
+            next();
+    
+        } catch (error) {
+            // console.log(error);
+            res.status(401).send("Invalid Token");
         }
-        req.token = token
-        req.user = user
-        next()
-    } catch (error) {
-        res.status(401).send({error: "Authentication required"})
-    }
 }
 
 module.exports = auth
