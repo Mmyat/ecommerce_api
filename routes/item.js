@@ -44,7 +44,7 @@ router.post('/items',Auth, async(req, res) => {
         const owner = req.user._id
         const {name,description,category,price} = req.body;
         const newItem = new Item({owner,name,description,category,price})
-        console.log(owner)
+        // console.log(owner)
         await newItem.save()
         res.status(201).send(newItem)
     } catch (error) {
@@ -54,25 +54,16 @@ router.post('/items',Auth, async(req, res) => {
 })
 
 //update an item
-
-router.patch('/items/:id', Auth, async(req, res) => {
-    const updates = Object.keys(req.body)
-    const allowedUpdates = ['name', 'description', 'category', 'price']
-
-    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
-
-    if(!isValidOperation) {
-        return res.status(400).send({ error: 'invalid updates'})
-    }
-
+router.put('/items/:id', Auth, async(req, res) => {
     try {
-        const item = await Item.findOne({ _id: req.params.id})
-    
+        const itemId = req.params.id;
+        const updateItem = req.body;
+        const item = await Item.findByIdAndUpdate(itemId,updateItem,{new:true})
+        console.log(item);
+        console.log(updateItem);
         if(!item){
             return res.status(404).send()
         }
-
-        updates.forEach((update) => item[update] = req.body[update])
         await item.save()
         res.send(item)
     } catch (error) {

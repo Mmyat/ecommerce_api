@@ -20,7 +20,7 @@ mongoose.connect(process.env.MONGO_URL, () => {
 app.use('/api',require('./routes/user'))
 app.use('/api',require('./routes/item'))
 app.use('/api/products',require('./routes/products'))
-// app.use('/api/cart',require('./routes/cart'))
+app.use('/api',require('./routes/cart'))
 app.listen(Port,(err)=>{
     if (err){
         console.log(err);
