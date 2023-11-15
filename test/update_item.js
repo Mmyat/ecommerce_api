@@ -1,13 +1,13 @@
 const axios = require('axios')
-axios.put("http://localhost:8080/api/items/65435fbfb4bf836e63bc7d78",{
-    name : "Boy shirt",
+axios.put("http://localhost:8080/api/items/6551945df0218d23954e3e82",{
+    name : "Boy Trouser",
     description :"It is 100% cotton,made by Giorendo",
     category : "Fashion and Apparel",
     price : 9500,
 },
 {headers: {
     'Authorization' :
-        `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTRkZWQ3YjY3MDY1Mzg5NGU2YzAwZTgiLCJpYXQiOjE2OTk5NTI5NDMsImV4cCI6MTY5OTk1NjU0M30.iTbsL9cs6KDd7t7aIwokhk5X6gtYIpyhToH3wegAjYo`
+        `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTU0OTlmOGY5NDYyMDY0ZGM2MWZjM2EiLCJpYXQiOjE3MDAwNDMyOTUsImV4cCI6MTcwMDA0Njg5NX0.VBQ0STun3xJn6ASrTi3JGW_VLvcH89U8bchHgTMfc1g`
     }}
 ).then((res)=>{console.log(res.data);})
 .catch(console.log())

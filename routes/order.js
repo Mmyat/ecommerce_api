@@ -4,18 +4,9 @@ const Order = require("../models/order")
 const Cart = require("../models/cart")
 const User = require("../models/user")
 const Auth = require("../middleware/auth")
-
-
 const router = new express.Router()
 
-
-//const flw = new Flutterwave(process.env.FLUTTERWAVE_V3_PUBLIC_KEY, process.env.FLUTTERWAVE_V3_SECRET_KEY)
-/* 
-commenting that out till I find a fix for flutterwave public key required error
-*/
-
 //get orders
-
 router.get('/orders', Auth, async (req, res) => {
     const owner = req.user._id;
     try {
