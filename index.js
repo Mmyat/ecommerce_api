@@ -19,7 +19,6 @@ mongoose.connect(process.env.MONGO_URL, () => {
 });
 app.use('/api',require('./routes/user'))
 app.use('/api',require('./routes/item'))
-app.use('/api/products',require('./routes/products'))
 app.use('/api',require('./routes/cart'))
 app.use('/api',require('./routes/order'))
 app.listen(Port,(err)=>{
