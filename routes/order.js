@@ -34,8 +34,6 @@ router.post('/order/checkout', Auth, async(req, res) => {
     try {
         const owner = req.user._id;
         let payload = req.body
-        
-
         //find cart and user 
         let cart = await Cart.findOne({owner})
         let user = req.user
