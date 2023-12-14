@@ -32,6 +32,14 @@ app.use('/api/users',userRouter)
 app.use('/api/items',Auth,itemRouter)
 app.use('/api/cart',Auth,cartRouter)
 app.use('/api/orders',Auth,orderRouter)
+//Public images acess
+app.use('/images', express.static('images'))
+app.get('/images/:filename', (req, res) => {
+  const imagefile = req.params.filename
+  const readStream = fs.createReadStream(`public/itemImages/${imagefile}`)
+  readStream.pipe(res)
+})
+//Base Url Log
 app.listen(Port,(err)=>{
     if (err){
         console.log(err);

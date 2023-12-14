@@ -1,6 +1,7 @@
 const express = require('express')
 const Item = require('../models/item')
 const items = require("../controller/itemcontroller");
+const { uploadMiddleware } = require('../middleware/imageupload')
 const router = new express.Router()
 
 //fetch all items
@@ -10,7 +11,7 @@ router.get('/',items.getAllItem)
 router.get('/:id',items.getItemById)
 
 //create an item
-router.post('/',items.createItem)
+router.post('/',uploadMiddleware,items.createItem)
 
 //update an item
 router.put('/:id',items.updateItem)

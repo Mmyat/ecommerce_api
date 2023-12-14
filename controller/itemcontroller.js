@@ -31,8 +31,9 @@ const getItemById = async( req,res,next)=>{
 const createItem = async( req,res,next)=>{
     try {
         const owner = req.user._id
-        const {name,description,category,price} = req.body;
-        const newItem = new Item({owner,name,description,category,price})
+        const {imagefile} = req.file.filename
+        const {name,description,category,price} = req.body
+        const newItem = new Item({owner,name,description,category,price,imagefile})
         // console.log(owner)
         await newItem.save()
         res.status(201).send(newItem)
