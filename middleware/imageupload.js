@@ -8,17 +8,21 @@ const storage = multer.diskStorage({
   });
   
 const upload = multer({ storage: storage });
-const uploadMiddleware = async(req, res, next) => {
-    try{
-        if (!req.file) {
-            return res.status(400).json({ message: 'No file uploaded' });
-        }
-        await upload.single('image')
-        res.send('Image is uploaded successfully');
-    }catch (error) {
-        res.status(500).send(error.message);
-    }
-    next();
-  };
+const uploadMiddleware = upload.single('image');
+// const uploadMiddleware = (req, res, next) => {
+//     try{
+//         console.log(req.body);
+//         if (!req.body) {
+//             res.status(400).json({ message: 'No file uploaded' })
+//             return;
+//         }else{
+//             upload.single('image')
+//             res.send('Image is uploaded successfully');
+//         }
+//     }catch (error) {
+//         res.status(500).send(error.message);
+//     }
+//     next();
+//   };
   
   module.exports = { uploadMiddleware};

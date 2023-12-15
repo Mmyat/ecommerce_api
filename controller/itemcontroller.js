@@ -29,12 +29,14 @@ const getItemById = async( req,res,next)=>{
     }
 }
 const createItem = async( req,res,next)=>{
+    console.log("error")
     try {
         const owner = req.user._id
-        const {imagefile} = req.file.filename
+        const imagefile = req.file.path
+        console.log(imagefile)
         const {name,description,category,price} = req.body
         const newItem = new Item({owner,name,description,category,price,imagefile})
-        // console.log(owner)
+        console.log(newItem)
         await newItem.save()
         res.status(201).send(newItem)
     } catch (error) {
