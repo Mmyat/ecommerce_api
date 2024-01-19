@@ -13,7 +13,7 @@ admin.initializeApp({
 const getAllItem = async (req, res, next) => {
   if (req.query.user == 1) {
     try {
-      const items = await Item.find({ owner: req.user._id });
+      const items = Item ;
       res.status(200).send(items);
     } catch (error) {
       console.log(error);
@@ -87,7 +87,6 @@ const createItem = async (req, res, next) => {
     await newItem.save();
     res.status(201).send("New product is save successfully");
   } catch (error) {
-    // console.log({error})
     res.status(400).send({ message: "error" });
   }
 };
