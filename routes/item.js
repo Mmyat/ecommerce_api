@@ -1,5 +1,6 @@
 const express = require('express')
 const items = require("../controller/itemcontroller");
+const isAdmin = require('../middleware/isAdmin')
 const router = new express.Router()
 //
 const multer = require('multer');  
@@ -13,12 +14,12 @@ router.get('/',items.getAllItem)
 router.get('/:id',items.getItemById)
 
 //create an item
-router.post('/',upload.single('file'),items.createItem)
+router.post('/',isAdmin,upload.single('file'),items.createItem)
 
 //update an item
-router.put('/:id',items.updateItem)
+router.put('/:id',isAdmin,items.updateItem)
 
 //delete item
-router.delete('/:id',items.deleteItem)
+router.delete('/:id',isAdmin,items.deleteItem)
 
 module.exports = router

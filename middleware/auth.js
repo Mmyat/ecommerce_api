@@ -11,6 +11,7 @@ const auth = async(req, res, next) => {
             let verifiedUser = jwt.verify(token, process.env.JWT_KEY);   
             if (!verifiedUser) return res.status(401).send('Unauthorized request')
             const user = await User.findOne({ _id: verifiedUser._id})
+            req.userId = user._id;
             req.user = user; 
             next();
     

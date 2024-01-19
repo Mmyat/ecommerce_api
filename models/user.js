@@ -31,6 +31,11 @@ const userSchema = new mongoose.Schema({
                 throw new Error('password musn\'t contain password')
             }
         }
+    },
+    role: {
+        type: String,
+        enum : ["user","admin"],
+        default: "user",
     }
 }, 
 {timestamps: true}
@@ -40,7 +45,7 @@ const userSchema = new mongoose.Schema({
 //Generate auth token
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({ _id: user._id.toString()}, process.env.JWT_KEY, { expiresIn: '1h' })
+    const token = jwt.sign({ _id: user._id.toString()}, process.env.JWT_KEY, { expiresIn: '12h' })
     await user.save()
     return token
 }
