@@ -8,7 +8,6 @@ let userRouter = require('./routes/user');
 let itemRouter = require('./routes/item');
 let cartRouter = require('./routes/cart');
 let orderRouter = require('./routes/order');
-const Port = 8080;
 app.use(cors())
 app.use(express.json())
 
@@ -40,9 +39,9 @@ app.get('/images/:filename', (req, res) => {
   readStream.pipe(res)
 })
 //Base Url Log
-app.listen(Port,(err)=>{
+app.listen(process.env.PORT,(err)=>{
     if (err){
         console.log(err);
     }
-    console.log("Server is listening at http://localhost:"+Port);
+    console.log("Server is listening at http://localhost:"+ process.env.PORT);
 })
