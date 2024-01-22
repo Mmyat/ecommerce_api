@@ -1,4 +1,3 @@
 node_modules
-#ignore
-.product-shop-service-account.json
-.env
+/product-shop-service-account.json
+/.env
