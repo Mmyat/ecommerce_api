@@ -1,13 +1,13 @@
 const Item = require("../models/item");
-const multer = require("multer");
+const dotenv = require("dotenv").config();
 const admin = require("firebase-admin");
-const serviceAccount = require("../../Key/product-shop-43203-firebase-adminsdk-ppzcj-0fe0ee0d04.json");
+// const serviceAccount = require("../../Key/product-shop-43203-firebase-adminsdk-ppzcj-0fe0ee0d04.json");
 const uuid = require("uuid-v4");
 // Initialize Firebase Admin SDK
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://product-shop-43203-default-rtdb.firebaseio.com",
-  storageBucket: "product-shop-43203.appspot.com",
+  credential: admin.credential.cert(process.env.GOOGLE_APPLICATION_CREDENTIALS),
+  databaseURL: process.env.DATABASE_URL,
+  storageBucket: process.env.STORAGEBUCKET_URL,
 });
 
 const getAllItem = async (req, res, next) => {

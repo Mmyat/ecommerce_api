@@ -8,7 +8,6 @@ let userRouter = require('./routes/user');
 let itemRouter = require('./routes/item');
 let cartRouter = require('./routes/cart');
 let orderRouter = require('./routes/order');
-const Port = 8080;
 app.use(cors())
 app.use(express.json())
 
@@ -32,17 +31,10 @@ app.use('/api/users',userRouter)
 app.use('/api/items',Auth,itemRouter)
 app.use('/api/cart',Auth,cartRouter)
 app.use('/api/orders',Auth,orderRouter)
-//Public images acess
-app.use('/images', express.static('images'))
-app.get('/images/:filename', (req, res) => {
-  const imagefile = req.params.filename
-  const readStream = fs.createReadStream(`public/itemImages/${imagefile}`)
-  readStream.pipe(res)
-})
 //Base Url Log
-app.listen(Port,(err)=>{
+app.listen(process.env.PORT,(err)=>{
     if (err){
         console.log(err);
     }
-    console.log("Server is listening at http://localhost:"+Port);
+    console.log("Server is listening at http://localhost:"+ process.env.PORT);
 })

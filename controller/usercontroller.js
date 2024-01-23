@@ -28,13 +28,8 @@ const login = async( req,res,next)=> {
             token,
         });
     } catch (error) {
-        if (user.role !== "admin" && user.role !== "user"){
-            console.log("Unsupported user role")
-            res.status(400).send({isSuccess: false,message:"Unsupported user role"});
-        }else{
             console.log(error)
             res.status(400).send({isSuccess: false,message:"Invalid user"});
-        }
     }
 }
 module.exports = {registerUser,login}

@@ -1,7 +1,7 @@
 const express = require('express')
 const items = require("../controller/itemcontroller");
 const isAdmin = require('../middleware/isAdmin')
-const router = new express.Router()
+const router = express.Router()
 //
 const multer = require('multer');  
 const storage = multer.memoryStorage();
